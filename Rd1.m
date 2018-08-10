@@ -16,7 +16,11 @@ function [MovGeral, Navio] = Rd1(Navio,NPorto,porto,RegraRetirada,RegraCarregame
 
 MovGeral=0;
 kk=length(find(porto(1,:)==NPorto)); %quantidade de conteineres que serao desembarcados neste porto ( o porto NPorto)
+kk=kk*5;
 patio_transb=zeros(6,ceil((kk/6)*1.5)); % área reservada para os contêineres de transbordo
+if size(patio_transb,2)==1;
+    patio_transb=zeros(6,3);
+end
 [lista_descarregamento] = Quem_Sai(Navio,porto,NPorto);
 
 
@@ -51,8 +55,8 @@ while u~=1
                 for k = (1:t) % de 1 até quantidade de contêineres acima
                     if (acima(contador)~=0)
                      %  [patio_transb] = Rc_Imp(patio_transb,Navio{1,lista_descarregamento(1,3)}(acima(contador,1),acima(contador,2))); % retira os contêineres que estão acima e colocá-os no lugar reservado do pátio
-                      [patio_transb] = Rc_Imp_Prioridades(patio_transb,Navio{1,lista_descarregamento(1,3)}(acima(contador,1),acima(contador,2)));
-                       Navio{1,lista_descarregamento(1,3)}(acima(contador,1),acima(contador,2))=0;
+                      [patio_transb] = Rc_Imp_Prioridades(patio_transb,Navio{1,lista_descarregamento(1,3)}(acima(contador,1),acima(contador,2))); % para carregar no patio de transbordo eh melhor usar esta funcao porque quando for retirar usando
+                       Navio{1,lista_descarregamento(1,3)}(acima(contador,1),acima(contador,2))=0;                                                                      % uma das regras Rt vai dar menos movimentos.  
                        MovGeral=MovGeral+1;                                           
                        acima(contador,:)=0; %transforma o valor em 0, indica que ja foi visto
                        contador=contador+1;                                        
@@ -85,19 +89,19 @@ end
 if nnz(patio_transb) ~=0
     switch RegraRetirada
         case 7
-                [MovGeralTransbordo,Navio] = Rt7(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt7(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         case 8
-                [MovGeralTransbordo,Navio] = Rt8(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt8(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         case 9
-                [MovGeralTransbordo,Navio] = Rt9(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt9(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         case 10
-                [MovGeralTransbordo,Navio] = Rt10(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt10(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         otherwise      
-               [MovGeralTransbordo,Navio] = Rt_descarregamento(patio_transb,RegraRetirada,Navio,RegraCarregamento);
+               [MovGeralTransbordo,Navio] = Rt_descarregamento(patio_transb,RegraRetirada,Navio,RegraCarregamento,porto);
                MovGeral=MovGeral+MovGeralTransbordo;    
     end
 end

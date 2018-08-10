@@ -2,7 +2,7 @@
 function [RegraRetirada,RegraCarregamento,RegraDescarregamento] = num2Rules2D(valor)
 
     retirada = 10;
-    carregamento = 6;
+    carregamento = 7;
     descarregamento = 3;
     
     contador = 0;

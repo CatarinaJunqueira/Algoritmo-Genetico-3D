@@ -1,4 +1,4 @@
-function [move_counter,Navio] = Rt7(P,Navio,RegraCarregamento) %Heuristica Caserta 2012
+function [move_counter,Navio] = Rt7(P,Navio,RegraCarregamento,porto) %Heuristica Caserta 2012
 %--------------------------------------------------------------------------------------------------------------------------------------%
 % identificando a regra de carregamento que vai ser utilizada % 
 Rc = strcat('Rc',int2str(RegraCarregamento));
@@ -78,19 +78,23 @@ end
         end
         % Depois de realocar todos os contêineres que estavam acima do
         % contêiner n, n pode ser retirado.
-           P(row_n,col_n)=0; % Tira do patio
-           if (RegraCarregamento == 2) || (RegraCarregamento == 4) % Carrega no navio
-               [Navio] = feval(Rc,Navio,y,altura_max); %chamando a regra de carregamento no navio
-           else
-               [Navio] = feval(Rc,Navio,y); %chamando a regra de carregamento no navio                       
-           end
-uu=unique(P);
-a=size(uu,1);
-if a==1 
-    if uu==0 % se o patio esta zerado, entao sair
-       break
-    end
-end
-          
+        P(row_n,col_n)=0; % Tira do patio           
+        switch RegraCarregamento %chamando a regra de carregamento no navio
+            case 2
+                    [Navio] = feval(Rc,Navio,y,altura_max);
+            case 4
+                    [Navio] = feval(Rc,Navio,y,altura_max);
+            case 7
+                    [Navio] = feval(Rc,Navio,y,porto);
+            otherwise
+                    [Navio] = feval(Rc,Navio,y);
+        end                    
+        uu=unique(P);
+        a=size(uu,1);
+        if a==1 
+            if uu==0 % se o patio esta zerado, entao sair
+               break
+            end
+        end         
     end
 end

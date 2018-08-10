@@ -49,4 +49,9 @@ colunas_p = colunas_p(colunas_p~=pos_larg);
            end               
          end   
     end   
+    
+    if size(vazio,1)==0
+       msg = 'Problema na função desguarnecido4 !! size(vazio,1)=0. ';
+       error(msg) 
+    end
 end

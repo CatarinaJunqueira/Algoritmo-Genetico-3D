@@ -1,4 +1,4 @@
- function [mov_total,Navio] = mover_Novo_Genetico(patio,l_navio,vzio,RegraCarregamento,Navio)
+ function [mov_total,Navio] = mover_Novo_Genetico(patio,l_navio,vzio,RegraCarregamento,Navio,porto)
 
 %--------------------------------------------------------------------------------------------------------------------------------------%
 % identificando a regra de carregamento que vai ser utilizada % 
@@ -35,11 +35,16 @@ n=1;
            conteiner=patio(conteiner(1),conteiner(2));
            [patio] = remover(patio,l_navio(1,:)); %tira do patio
            
-           if (RegraCarregamento == 2) || (RegraCarregamento == 4) % Carrega no navio
-               [Navio] = feval(Rc,Navio,conteiner,altura_max); %chamando a regra de carregamento no navio
-           else
-               [Navio] = feval(Rc,Navio,conteiner); %chamando a regra de carregamento no navio                       
-           end
+              switch RegraCarregamento %chamando a regra de carregamento no navio
+                case 2
+                        [Navio] = feval(Rc,Navio,conteiner,altura_max);
+                case 4
+                        [Navio] = feval(Rc,Navio,conteiner,altura_max);
+                case 7
+                        [Navio] = feval(Rc,Navio,conteiner,porto);
+                otherwise
+                        [Navio] = feval(Rc,Navio,conteiner);
+              end  
 
        else
 
@@ -72,11 +77,16 @@ n=1;
         [patio] = remover(patio,l_navio(1,:)); %tira do patio
        % mov_total = mov_total + 1; %Soma o custo da movimentacao total
        % l_navio(n_cont,:)=0; %transforma o valor em 0, indica que ja foi visto
-           if (RegraCarregamento == 2) || (RegraCarregamento == 4) % Carrega no navio
-               [Navio] = feval(Rc,Navio,conteiner,altura_max); %chamando a regra de carregamento no navio
-           else
-               [Navio] = feval(Rc,Navio,conteiner); %chamando a regra de carregamento no navio                       
-           end
+          switch RegraCarregamento %chamando a regra de carregamento no navio
+            case 2
+                    [Navio] = feval(Rc,Navio,conteiner,altura_max);
+            case 4
+                    [Navio] = feval(Rc,Navio,conteiner,altura_max);
+            case 7
+                    [Navio] = feval(Rc,Navio,conteiner,porto);
+            otherwise
+                    [Navio] = feval(Rc,Navio,conteiner);
+          end        
        end
    % end
    %  end

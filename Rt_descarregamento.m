@@ -8,7 +8,7 @@
 %---------------------------------------------------------------------%
    
    
-function [MovGeral,Navio] = Rt_descarregamento(patio,RegraRetirada,Navio,RegraCarregamento)
+function [MovGeral,Navio] = Rt_descarregamento(patio,RegraRetirada,Navio,RegraCarregamento,porto)
 
 MovGeral=0;
 %----------------------------------%
@@ -19,7 +19,7 @@ vzio = strcat('desguarnecido',int2str(RegraRetirada));
 
 [l_navio] = encontraCasertaDescarregamento(patio); % Chamando o localiza, traz uma lista das posições dos contêineres que vão ser retirados.
 
-[mov_total,Navio] = mover_Novo_Genetico_Descarregamento(patio,l_navio,vzio,RegraCarregamento,Navio);
+[mov_total,Navio] = mover_Novo_Genetico_Descarregamento(patio,l_navio,vzio,RegraCarregamento,Navio,porto);
 MovGeral=MovGeral+mov_total;
 
 end 

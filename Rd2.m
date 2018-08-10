@@ -17,6 +17,9 @@ end
 kk=length(find(porto(1,:)==NPorto)); %quantidade de conteineres que tem como destino o porto atual
 MovGeral=y-kk; %quantidade de conteineres remanejados
 patio_transb=zeros(6,ceil((MovGeral/6)*1.5)); % área reservada para os contêineres de transbordo
+if size(patio_transb,2)==1;
+    patio_transb=zeros(6,3);
+end
 
 for z=1:size(Navio,2)
     [linha,coluna]=size(Navio{1,z});
@@ -44,19 +47,19 @@ end
 if nnz(patio_transb) ~=0    
     switch RegraRetirada
         case 7
-                [MovGeralTransbordo,Navio] = Rt7(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt7(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         case 8
-                [MovGeralTransbordo,Navio] = Rt8(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt8(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         case 9
-                [MovGeralTransbordo,Navio] = Rt9(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt9(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         case 10
-                [MovGeralTransbordo,Navio] = Rt10(patio_transb,Navio,RegraCarregamento);
+                [MovGeralTransbordo,Navio] = Rt10(patio_transb,Navio,RegraCarregamento,porto);
                 MovGeral=MovGeral+MovGeralTransbordo; 
         otherwise      
-               [MovGeralTransbordo,Navio] = Rt_descarregamento(patio_transb,RegraRetirada,Navio,RegraCarregamento);
+               [MovGeralTransbordo,Navio] = Rt_descarregamento(patio_transb,RegraRetirada,Navio,RegraCarregamento,porto);
                MovGeral=MovGeral+MovGeralTransbordo;    
     end
 end

@@ -14,22 +14,22 @@
 % RegraCarregamento=1; % número da regra de carregamento no navio
 % [MovGeral,tempo,DistanciaTotal,Navio] = Rt(patio,navio,RegraRetirada,Navio,RegraCarregamento)
 
-function [MovGeral,Navio] = Rt(patio,RegraRetirada,Navio,RegraCarregamento)
+function [MovGeral,Navio] = Rt(patio,RegraRetirada,Navio,RegraCarregamento,porto)
 
 MovGeral=0;
     
 switch RegraRetirada
     case 7
-           [mov_total,Navio] = Rt7(patio,Navio,RegraCarregamento);
+           [mov_total,Navio] = Rt7(patio,Navio,RegraCarregamento,porto);
            MovGeral=MovGeral+mov_total;
     case 8
-           [mov_total,Navio] = Rt8(patio,Navio,RegraCarregamento);
+           [mov_total,Navio] = Rt8(patio,Navio,RegraCarregamento,porto);
            MovGeral=MovGeral+mov_total;
     case 9
-           [mov_total,Navio] = Rt9(patio,Navio,RegraCarregamento);
+           [mov_total,Navio] = Rt9(patio,Navio,RegraCarregamento,porto);
            MovGeral=MovGeral+mov_total;
     case 10
-           [mov_total,Navio] = Rt10(patio,Navio,RegraCarregamento);
+           [mov_total,Navio] = Rt10(patio,Navio,RegraCarregamento,porto);
            MovGeral=MovGeral+mov_total;
     otherwise
         %----------------------------------%
@@ -40,7 +40,7 @@ switch RegraRetirada
 
         [l_navio] = encontraCaserta(patio); % Chamando o localiza, traz uma lista das posições dos contêineres que vão ser retirados.
 
-        [mov_total,Navio] = mover_Novo_Genetico(patio,l_navio,vzio,RegraCarregamento,Navio);
+        [mov_total,Navio] = mover_Novo_Genetico(patio,l_navio,vzio,RegraCarregamento,Navio,porto);
         MovGeral=MovGeral+mov_total;
 end
   

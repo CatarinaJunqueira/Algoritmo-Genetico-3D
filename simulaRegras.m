@@ -9,7 +9,7 @@ value = 0; % Numero de movimentos realizados para carregar e descarregar
            % containeres durante a viagem de um navio por P portos.
 
 if k==1 % Verificando se nao estamos no primeiro porto onde os conteineres sao apenas carregados !!
-  [MovGeral,Navio] = Rt(patio,RegraRetirada,Navio,RegraCarregamento);
+  [MovGeral,Navio] = Rt(patio,RegraRetirada,Navio,RegraCarregamento,porto);
   value=value+MovGeral;      
 end    
 
@@ -17,7 +17,7 @@ if k~=1 % Do porto 2 ateh P-1, primeiro descarregado do navio e depois carrega o
    [MovGeral,Navio] = Rd(Navio, k, porto,RegraRetirada,RegraCarregamento,RegraDescarregamento);
     value=value+MovGeral;
 
-   [MovGeral,Navio] = Rt(patio,RegraRetirada,Navio,RegraCarregamento); % Caso retirando os cont com base no navio de destino 
+   [MovGeral,Navio] = Rt(patio,RegraRetirada,Navio,RegraCarregamento,porto); % Caso retirando os cont com base no navio de destino 
    value=value+MovGeral;
 end
   

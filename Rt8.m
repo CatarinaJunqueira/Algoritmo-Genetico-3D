@@ -1,5 +1,5 @@
 % P=[0 0 0; 0 0 0; 0 0 0; 9 4 5; 7 3 8; 6 1 2];
-function [move_counter,Navio] = Rt8(P,Navio,RegraCarregamento) %Heuristica LA-N Pettering e Hussein- 2013
+function [move_counter,Navio] = Rt8(P,Navio,RegraCarregamento,porto) %Heuristica LA-N Pettering e Hussein- 2013
 %--------------------------------------------------------------------------------------------------------------------------------------%
 % identificando a regra de carregamento que vai ser utilizada % 
 Rc = strcat('Rc',int2str(RegraCarregamento));
@@ -132,20 +132,23 @@ for i=1:size(o,2)
              end
         end     
     end   
-    P(row_n,col_n)=0; % Tira do patio
-    if (RegraCarregamento == 2) || (RegraCarregamento == 4) % Carrega no navio
-       [Navio] = feval(Rc,Navio,n,altura_max); %chamando a regra de carregamento no navio
-    else
-      [Navio] = feval(Rc,Navio,n); %chamando a regra de carregamento no navio                       
-    end
-uu=unique(P);
-a=size(uu,1);
-if a==1 
-    if uu==0 % se o patio esta zerado, entao sair
-       break
-    end
+        P(row_n,col_n)=0; % Tira do patio
+        switch RegraCarregamento %chamando a regra de carregamento no navio
+            case 2
+                    [Navio] = feval(Rc,Navio,n,altura_max);
+            case 4
+                    [Navio] = feval(Rc,Navio,n,altura_max);
+            case 7
+                    [Navio] = feval(Rc,Navio,n,porto);
+            otherwise
+                    [Navio] = feval(Rc,Navio,n);
+        end   
+        uu=unique(P);
+        a=size(uu,1);
+        if a==1 
+            if uu==0 % se o patio esta zerado, entao sair
+               break
+            end
+        end
 end
-
-end
-
 end

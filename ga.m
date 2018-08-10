@@ -10,15 +10,15 @@
 % % np     % numero de portos percorridos
 % % patio  % matriz de ocupacao T, do patio
 % % lbound % limite inferior da quantidade de regras % lbound = 1
-% % ubound % limite superior da quantidade de regras % ubound = 48
+% % ubound % limite superior da quantidade de regras % ubound = 210
 % % TESTE:
 % % [patio,navio,porto,Navio,np] = gera_cenario(7,10,6,4)
 % % [X,fit,tempo]=ga(Navio,navio,porto,patio,4,1,48)
 
-function [X,fit,tempo,melhor_fitness,Melhor_Regra_Rt,Melhor_Regra_Rc,Melhor_Regra_Rd]=ga(Navio,porto,patio,np,lbound,ubound,NomeInstancia)
+function [X,fit,tempo,Melhor_Regra_Rt,Melhor_Regra_Rc,Melhor_Regra_Rd]=ga(Navio,porto,patio,np,lbound,ubound,NomeInstancia)
     
   %  NomeInstancia = input('Nomeie a instancia de teste como = Instancia + Numero -> ');
-     distcomp.feature( 'LocalUseMpiexec', false )
+     distcomp.feature( 'LocalUseMpiexec', false );
      myCluster = parcluster('local');
      myCluster.NumWorkers = 4;  % 'Modified' property now TRUE
      saveProfile(myCluster);    % 'local' profile now updated,
@@ -45,7 +45,7 @@ function [X,fit,tempo,melhor_fitness,Melhor_Regra_Rt,Melhor_Regra_Rc,Melhor_Regr
           
      % Chamadas as funções auxiliares.
      population = initialize(POPSIZE,NVARS,lbound,ubound);      
-     [population,u,g] = evaluate(POPSIZE,population,Navio,porto,patio,MAXGENS,generation); 
+     [population,u,g] = evaluate(POPSIZE,population,Navio,porto,patio); 
      population = keep_the_best(POPSIZE,NVARS,population);
      melhores(1) = population(POPSIZE+1).fitness;
      melhor_fitness(1)=u;
@@ -60,7 +60,7 @@ function [X,fit,tempo,melhor_fitness,Melhor_Regra_Rt,Melhor_Regra_Rc,Melhor_Regr
        ipopulation = crossover(POPSIZE, PXOVER, NVARS, population);
        ipopulation = mutate(POPSIZE, NVARS, PMUTATION, ipopulation);
        population = cbelitist(POPSIZE,NVARS,ipopulation);       
-       [population,u,g] = evaluate(POPSIZE,population,Navio,porto,patio,MAXGENS,generation);
+       [population,u,g] = evaluate(POPSIZE,population,Navio,porto,patio);
        population = keep_the_best(POPSIZE,NVARS,population);
        melhores(generation+1) = population(POPSIZE+1).fitness;
        melhor_fitness(generation+1) =u;
@@ -68,9 +68,10 @@ function [X,fit,tempo,melhor_fitness,Melhor_Regra_Rt,Melhor_Regra_Rc,Melhor_Regr
        xrep(generation,:) = report(POPSIZE, population);
   %     fprintf(1,'Geracao: %4d -> Best Fitness: %8.4f  \n',generation,1/xrep(generation,1)-1);      
      end
-      p = gcp;
-      delete(p)
-      tempo=toc(elapsedtime);
+     tempo=toc(elapsedtime);
+     p = gcp;
+     delete(p)
+      
      % Copiando informações das soluções da última geração
      % para uma matriz X.
      for i=1:POPSIZE+1
@@ -130,6 +131,9 @@ function [X,fit,tempo,melhor_fitness,Melhor_Regra_Rt,Melhor_Regra_Rc,Melhor_Regr
      Max=max(Melhores_Regras_Rd(2,:));
      [~,col]=find(Melhores_Regras_Rd(2,:)==Max);
      Melhor_Regra_Rd=Melhores_Regras_Rd(1,col);
+     
+     melhor_fitness=min(fit);
+     display(melhor_fitness)
      
      NomeInstancia=strcat('Resultados-',NomeInstancia,'.mat');
     save(NomeInstancia, 'X','fit','melhor_fitness','Melhor_Regra_Rt','Melhor_Regra_Rc','Melhor_Regra_Rd','tempo');

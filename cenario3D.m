@@ -2,9 +2,9 @@
 % n = input('Número de colunas do pátio = ');  
 % q = input('Quantidade de contêineres = ');   
 function[Navio,porto,patio,Qntd_Conteineres] = cenario3D(NP,n,ocupacao,matriz_de_transporte)
-m=6; %Número de linhas do pátio
+m=5; %Número de linhas do pátio
 patio=cell(NP-1,1);
-porto=cell(NP-1,1);
+%porto=zeros(NP-1,1);
 MC=zeros(NP-1,1);
 
 switch ocupacao %Quantidade de contêineres
@@ -38,8 +38,12 @@ switch matriz_de_transporte
                      XX=XX+1;
                      [ppatio,pporto] = gera_patio(m,n,q,XX,NP,A,B);         
                  end    
-                    patio{y,1}=ppatio;
-                    porto{y,1}=pporto;
+                    patio{y,1}=ppatio;                   
+                    if y==1;
+                        porto=pporto;
+                    else
+                        porto=[porto,pporto];
+                    end
             end 
             f=ceil((max(max(patio{NP-1,1}))/108));
             Navio=cell(1,f);
@@ -76,7 +80,11 @@ switch matriz_de_transporte
                      [ppatio,pporto] = gera_patio(m,n,q,XX,np,A,B);         
                  end    
                     patio{y,1}=ppatio;
-                    porto{y,1}=pporto;
+                    if y==1;
+                        porto=pporto;
+                    else
+                        porto=[porto,pporto];
+                    end
             end         
             f=ceil((max(max(patio{NP-1,1}))/108));
             Navio=cell(1,f);
@@ -105,7 +113,11 @@ switch matriz_de_transporte
                      [ppatio,pporto] = gera_patio(m,n,q,XX,NP,A,B);         
                  end    
                     patio{y,1}=ppatio;
-                    porto{y,1}=pporto;
+                    if y==1;
+                        porto=pporto;
+                    else
+                        porto=[porto,pporto];
+                    end
             end  
             
             f=ceil((max(max(patio{NP-1,1}))/108));

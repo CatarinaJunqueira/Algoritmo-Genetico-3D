@@ -1,4 +1,4 @@
-function [move_counter,Navio] = Rt9(P,Navio,RegraCarregamento) %Regra da menor coluna
+function [move_counter,Navio] = Rt9(P,Navio,RegraCarregamento,porto) %Regra da menor coluna
 %--------------------------------------------------------------------------------------------------------------------------------------%
 % identificando a regra de carregamento que vai ser utilizada % 
 Rc = strcat('Rc',int2str(RegraCarregamento));
@@ -62,11 +62,16 @@ for y=o
        P(row_n,col_n)=0; % Tira do patio
 %-------------------------------------------------------------------------------------------------------------------------------------% 
 %    Carregar no navio
-       if (RegraCarregamento == 2) || (RegraCarregamento == 4) 
-           [Navio] = feval(Rc,Navio,y,altura_max); %chamando a regra de carregamento no navio
-       else
-           [Navio] = feval(Rc,Navio,y); %chamando a regra de carregamento no navio                       
-       end
+        switch RegraCarregamento %chamando a regra de carregamento no navio
+            case 2
+                    [Navio] = feval(Rc,Navio,y,altura_max);
+            case 4
+                    [Navio] = feval(Rc,Navio,y,altura_max);
+            case 7
+                    [Navio] = feval(Rc,Navio,y,porto);
+            otherwise
+                    [Navio] = feval(Rc,Navio,y);
+        end   
        
     uu=unique(P);
     a=size(uu,1);

@@ -1,6 +1,6 @@
 % Funcao responsavel por realizar a avaliacao das solucoes 
 % propostas pelo algoritmo genetico.
-function [population,melhor_fitness,melhor_regra] = evaluate(POPSIZE,population,Navio,porto,patio,MAXGENS,generation)
+function [population,melhor_fitness,melhor_regra] = evaluate(POPSIZE,population,Navio,porto,patio)
          
    %--------------------------------------------//   
    % Calculation of costs by the rules for      //
@@ -8,13 +8,13 @@ function [population,melhor_fitness,melhor_regra] = evaluate(POPSIZE,population,
    %--------------------------------------------//
    
    fitness = zeros(POPSIZE,1);
-   ultima_geracao = zeros(POPSIZE,1);
+%   ultima_geracao = zeros(POPSIZE,1);
     
-   parfor mem=1:POPSIZE    
-  % for mem=1:POPSIZE    
-        if (mem == POPSIZE && generation == MAXGENS)
-        ultima_geracao(mem) = 1;
-        end
+ %  parfor mem=1:POPSIZE    
+   for mem=1:POPSIZE    
+%         if (mem == POPSIZE && generation == MAXGENS)
+%         ultima_geracao(mem) = 1;
+%         end
            
      [fitness(mem)] = sol2fo(population(mem).gene,patio,Navio,porto); 
                                                
